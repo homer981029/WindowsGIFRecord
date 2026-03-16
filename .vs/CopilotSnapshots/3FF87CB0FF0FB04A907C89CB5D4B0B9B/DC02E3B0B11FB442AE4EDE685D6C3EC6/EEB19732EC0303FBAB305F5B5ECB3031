@@ -1,0 +1,120 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;          // 來自 System.Drawing.Common
+using System.Drawing.Imaging;   // 來自 System.Drawing.Common
+using System.IO;
+using System.Windows;
+using System.Windows.Threading;
+using ImageMagick;             // 來自 Magick.NET
+
+namespace ScreenToGifTool
+{
+    public partial class MainWindow : Window
+    {
+        private Rect _selectedRect;
+        private SelectionWindow _selectionWin;
+        private DispatcherTimer _recordTimer;
+        private List<MagickImage> _frames = new List<MagickImage>();
+        private string _savePath = @"C:\RecordedGifs";
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            if (!Directory.Exists(_savePath)) Directory.CreateDirectory(_savePath);
+        }
+
+        private void BtnSelectArea_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            _selectionWin = new SelectionWindow();
+            bool? result = _selectionWin.ShowDialog();
+
+            if (result == true)
+            {
+                _selectedRect = _selectionWin.SelectedRect;
+                btnStart.IsEnabled = true;
+            }
+            this.Show();
+        }
+
+        private void BtnStart_Click(object sender, RoutedEventArgs e)
+        {
+            _frames.Clear();
+            // 低畫質 30fps = 33ms 間隔, 高畫質 60fps = 16ms 間隔
+            int fps = cbQuality.SelectedIndex == 0 ? 30 : 60;
+
+            _recordTimer = new DispatcherTimer(DispatcherPriority.Render);
+            _recordTimer.Interval = TimeSpan.FromMilliseconds(1000.0 / fps);
+            _recordTimer.Tick += CaptureScreen;
+
+            btnStart.IsEnabled = false;
+            btnStop.IsEnabled = true;
+            btnSelectArea.IsEnabled = false;
+
+            _selectionWin.SetRecordingStyle(true);
+            _selectionWin.Show();
+            _recordTimer.Start();
+        }
+
+        private void CaptureScreen(object sender, EventArgs e)
+        {
+            int x = (int)_selectedRect.X;
+            int y = (int)_selectedRect.Y;
+            int w = (int)_selectedRect.Width;
+            int h = (int)_selectedRect.Height;
+
+            // 抓取螢幕畫面
+            using (Bitmap bmp = new Bitmap(w, h))
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.CopyFromScreen(x, y, 0, 0, bmp.Size);
+                }
+
+                // 轉為 MagickImage 存入記憶體
+                MemoryStream ms = new MemoryStream();
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                ms.Position = 0;
+                _frames.Add(new MagickImage(ms));
+            }
+        }
+
+        private async void BtnStop_Click(object sender, RoutedEventArgs e)
+        {
+            _recordTimer.Stop();
+            _selectionWin.Hide();
+            pbProcessing.Visibility = Visibility.Visible;
+            btnStop.IsEnabled = false;
+
+            await System.Threading.Tasks.Task.Run(() =>
+            {
+                string fileName = $"Gif_{DateTime.Now:yyyyMMdd_HHmmss}.gif";
+                string fullPath = Path.Combine(_savePath, fileName);
+
+                using (MagickImageCollection collection = new MagickImageCollection())
+                {
+                    // 低畫質延遲約 3 (1/100s), 高畫質約 1
+                    uint delay = cbQuality.SelectedIndex == 0 ? 3u : 1u;
+
+                    foreach (var frame in _frames)
+                    {
+                        frame.AnimationDelay = delay;
+                        // 低畫質則將解析度減半以減少檔案大小
+                        if (cbQuality.SelectedIndex == 0) frame.Resize(frame.Width / 2u, 0u);
+                        collection.Add(frame);
+                    }
+
+                    collection.Write(fullPath);
+                }
+
+                Dispatcher.Invoke(() =>
+                {
+                    pbProcessing.Visibility = Visibility.Collapsed;
+                    MessageBox.Show($"錄製完成！\n檔案儲存在：{fullPath}", "成功");
+                    btnStart.IsEnabled = true;
+                    btnSelectArea.IsEnabled = true;
+                });
+            });
+        }
+    }
+}

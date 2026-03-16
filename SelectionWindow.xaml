@@ -1,0 +1,17 @@
+﻿<Window x:Class="ScreenToGifTool.SelectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SelectionWindow" 
+        WindowStyle="None" Background="#01000000" AllowsTransparency="True"
+        Topmost="True" ShowInTaskbar="False" Cursor="Cross">
+
+    <Canvas x:Name="SelectionCanvas">
+        <Border x:Name="SelectionBorder" 
+                BorderBrush="Red" 
+                BorderThickness="2" 
+                Background="Transparent" 
+                Visibility="Collapsed" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top"/>
+    </Canvas>
+</Window>
