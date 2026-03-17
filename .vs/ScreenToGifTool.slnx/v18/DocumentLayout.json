@@ -49,7 +49,7 @@
               "RelativeDocumentMoniker": "MainWindow.xaml",
               "ToolTip": "C:\\Users\\harpa\\OneDrive\\\u684C\u9762\\ScreenToGifTool\\MainWindow.xaml",
               "RelativeToolTip": "MainWindow.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAKAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2026-03-16T14:19:44.732Z",
               "EditorCaption": ""
@@ -64,7 +64,8 @@
               "RelativeToolTip": "MainWindow.xaml.cs",
               "ViewState": "AgIAAH8AAAAAAAAAAAAvwKYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-16T14:19:43.858Z"
+              "WhenOpened": "2026-03-16T14:19:43.858Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -76,7 +77,8 @@
               "RelativeToolTip": "SelectionWindow.xaml",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-03-16T14:49:29.396Z"
+              "WhenOpened": "2026-03-16T14:49:29.396Z",
+              "EditorCaption": ""
             }
           ]
         }
