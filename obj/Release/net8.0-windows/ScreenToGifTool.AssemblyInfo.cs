@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ScreenToGifTool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cfb00c32fe72843ebbe1e979feca2a0c13491d62")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a1bb4947066b07377beb5cf4d354ba218fe74349")]
 [assembly: System.Reflection.AssemblyProductAttribute("ScreenToGifTool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ScreenToGifTool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

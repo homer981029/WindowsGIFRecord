@@ -484,3 +484,6 @@ C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\bin\Release\net8.0-windows\win-x6
 C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\bin\Release\net8.0-windows\win-x64\zh-Hant\UIAutomationTypes.resources.dll
 C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\bin\Release\net8.0-windows\win-x64\zh-Hant\WindowsBase.resources.dll
 C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\bin\Release\net8.0-windows\win-x64\zh-Hant\WindowsFormsIntegration.resources.dll
+C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\bin\Release\net8.0-windows\win-x64\ScreenToGifTool.pdb
+C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\obj\Release\net8.0-windows\win-x64\ScreenToGifTool.sourcelink.json
+C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\obj\Release\net8.0-windows\win-x64\ScreenToGifTool.pdb

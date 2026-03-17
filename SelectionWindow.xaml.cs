@@ -1,32 +1,50 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Controls; // 必須引用這個才能用 Canvas
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 
 namespace ScreenToGifTool
 {
     public partial class SelectionWindow : Window
     {
-        private Point _startPoint;
-        private bool _isSelecting = false;
-        private bool _isFixed = false;
+        // --- Win32 API 穿透常數 ---
+        private const int GWL_EXSTYLE = -20;
+        private const int WS_EX_TRANSPARENT = 0x00000020;
 
-        // 用來給 MainWindow 讀取的錄影區域資訊
-        public Rect SelectedRect { get; private set; }
+        [DllImport("user32.dll")]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        // --- 狀態變數 ---
+        private Point _startPoint;
+        private bool _isSelecting = false; // 補上這個
+        private bool _isFixed = false;     // 補上這個
+        public Rect SelectedRect { get; set; }
 
         public SelectionWindow()
         {
             InitializeComponent();
+        }
 
-            // 關鍵：抓取所有螢幕組合起來的「虛擬螢幕」範圍
-            this.Left = SystemParameters.VirtualScreenLeft;
-            this.Top = SystemParameters.VirtualScreenTop;
-            this.Width = SystemParameters.VirtualScreenWidth;
-            this.Height = SystemParameters.VirtualScreenHeight;
+        // 開啟穿透
+        public void EnableClickThrough()
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+            SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle | WS_EX_TRANSPARENT);
+        }
 
-            // 確保視窗在最前面
-            this.Topmost = true;
-            this.WindowStartupLocation = WindowStartupLocation.Manual;
+        // 關閉穿透
+        public void DisableClickThrough()
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+            SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle & ~WS_EX_TRANSPARENT);
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
@@ -35,28 +53,24 @@ namespace ScreenToGifTool
             {
                 if (!_isSelecting && !_isFixed)
                 {
-                    // 第一下：開始框選
                     _isSelecting = true;
                     _startPoint = e.GetPosition(this);
                 }
                 else if (_isSelecting)
                 {
-                    // 第二下：固定框選
                     _isSelecting = false;
                     _isFixed = true;
 
-                    // 彈出確認視窗
                     var result = MessageBox.Show("確認選取此區域嗎？", "確認", MessageBoxButton.OKCancel);
-
                     if (result == MessageBoxResult.OK)
                     {
-                        // 用戶點「確定」：關閉視窗並傳回 true
                         this.DialogResult = true;
                     }
                     else
                     {
-                        // 用戶點「取消」：關閉視窗並傳回 false
-                        // 這會讓 MainWindow 裡的 ShowDialog 結束，並執行之後的 this.Show()
+                        // 取消後重置狀態，讓使用者可以重新選取
+                        _isFixed = false;
+                        SelectionBorder.Visibility = Visibility.Collapsed;
                         this.DialogResult = false;
                     }
                 }
@@ -71,15 +85,13 @@ namespace ScreenToGifTool
 
                 double x = Math.Min(_startPoint.X, currentPoint.X);
                 double y = Math.Min(_startPoint.Y, currentPoint.Y);
-                double width = Math.Abs(_startPoint.X - currentPoint.X);
-                double height = Math.Abs(_startPoint.Y - currentPoint.Y);
+                double width = Math.Max(1, Math.Abs(_startPoint.X - currentPoint.X));
+                double height = Math.Max(1, Math.Abs(_startPoint.Y - currentPoint.Y));
 
-                // 顯示框框
                 SelectionBorder.Visibility = Visibility.Visible;
                 SelectionBorder.Width = width;
                 SelectionBorder.Height = height;
 
-                // 使用 Canvas 設定座標
                 Canvas.SetLeft(SelectionBorder, x);
                 Canvas.SetTop(SelectionBorder, y);
 
@@ -87,7 +99,6 @@ namespace ScreenToGifTool
             }
         }
 
-        // 當錄製開始時，MainWindow 會呼叫這個方法來變色
         public void SetRecordingStyle(bool isRecording)
         {
             SelectionBorder.BorderBrush = isRecording ? Brushes.Green : Brushes.Red;
