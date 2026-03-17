@@ -1,0 +1,8 @@
+# 忽略所有 bin 和 obj 資料夾
+[Bb]in/
+[Oo]bj/
+
+# 如果你只想忽略特定的發佈資料夾
+publish/
+*.exe
+*.pdb
