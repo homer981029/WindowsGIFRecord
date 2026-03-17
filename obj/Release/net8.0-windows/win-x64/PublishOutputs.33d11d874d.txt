@@ -1,0 +1,8 @@
+C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\bin\Release\net8.0-windows\publish\win-x64\ScreenToGifTool.pdb
+C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\bin\Release\net8.0-windows\publish\win-x64\D3DCompiler_47_cor3.dll
+C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\bin\Release\net8.0-windows\publish\win-x64\PenImc_cor3.dll
+C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\bin\Release\net8.0-windows\publish\win-x64\PresentationNative_cor3.dll
+C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\bin\Release\net8.0-windows\publish\win-x64\vcruntime140_cor3.dll
+C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\bin\Release\net8.0-windows\publish\win-x64\wpfgfx_cor3.dll
+C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\bin\Release\net8.0-windows\publish\win-x64\Magick.Native-Q16-x64.dll
+C:\Users\harpa\OneDrive\桌面\ScreenToGifTool\bin\Release\net8.0-windows\publish\win-x64\ScreenToGifTool.exe

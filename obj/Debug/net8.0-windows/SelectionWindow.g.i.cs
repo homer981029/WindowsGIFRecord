@@ -68,7 +68,7 @@ namespace ScreenToGifTool {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ScreenToGifTool;V1.0.0.0;component/selectionwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ScreenToGifTool;component/selectionwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\SelectionWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
